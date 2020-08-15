@@ -94,13 +94,14 @@ export function formatCreditCardNumber(value) {
   return nextValue.trim();
 }
 
-export function formatCVC(value, prevValue, allValues = {}) {
+export function formatCVC(value, cardNumber) {
   const clearValue = clearNumber(value);
   let maxLength = 4;
 
-  if (allValues.number) {
-    const issuer = Payment.fns.cardType(allValues.number);
-    maxLength = issuer === 'amex' ? 4 : 3;
+  if (cardNumber) {
+    const issuer = getCardType(cardNumber);
+
+    maxLength = issuer === 'americanExpress' ? 4 : 3;
   }
 
   return clearValue.slice(0, maxLength);

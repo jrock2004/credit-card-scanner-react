@@ -34,13 +34,14 @@ export default function CreditCard() {
     cardExpire: '',
     cardCvc: '',
     cardPostalCode: '',
+    cardName: '',
   });
 
-  useEffect(() => {
-    const type = card.creditCards[card.cardType];
+  // useEffect(() => {
+  //   const type = card.creditCards[card.cardType];
 
-    setCard({ ...card, cardTypeImage: type });
-  }, [card.cardType]);
+  //   setCard({ ...card, cardTypeImage: type });
+  // }, [card.cardType]);
 
   function handleInputChange({ target }) {
     let name = target.name,
@@ -57,7 +58,7 @@ export default function CreditCard() {
     }
 
     if (name === 'cardCvc') {
-      value = formatCVC(value);
+      value = formatCVC(value, card.cardNumber);
     }
 
     if (name === 'cardPostalCode') {
@@ -125,6 +126,20 @@ export default function CreditCard() {
                 onChange={handleInputChange}
               />
             </CreditCardField>
+          </div>
+          <div className="flex flex-col mb-2">
+            <label htmlFor="cc-name" className="text-sm font-semibold text-gray-700">
+              Name on card
+            </label>
+            <input
+              className="w-full p-3 border rounded-sm"
+              id="cc-name"
+              name="cardName"
+              type="text"
+              value={card.cardName}
+              autoComplete="cc-name"
+              onChange={handleInputChange}
+            />
           </div>
         </form>
       </section>
