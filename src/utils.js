@@ -19,13 +19,9 @@ export function getCardType(value) {
     case 'discover':
       return 'discover';
     case 'elo':
-      console.log('Need image for elo');
-
-      return 'other';
+      return 'elo';
     case 'hipercard':
-      console.log('Need image for hipercard');
-
-      return 'other';
+      return 'hipercard';
     case 'jcb':
       return 'jCB';
     case 'laser':
@@ -33,15 +29,11 @@ export function getCardType(value) {
 
       return 'other';
     case 'maestro':
-      console.log('Need image for maestro');
-
-      return 'other';
+      return 'maestro';
     case 'mastercard':
       return 'masterCard';
     case 'mir':
-      console.log('Need image for mir');
-
-      return 'other';
+      return 'mir';
     case 'troy':
       console.log('Need image for troy');
 
@@ -110,6 +102,11 @@ export function formatCVC(value, cardNumber) {
 export function formatExpirationDate(value) {
   const clearValue = clearNumber(value);
 
+  // If autofill is returning MM/YYYY
+  if (clearValue.length === 6) {
+    return `${clearValue.slice(0, 2)}/${clearValue.slice(4, 6)}`;
+  }
+
   if (clearValue.length >= 3) {
     return `${clearValue.slice(0, 2)}/${clearValue.slice(2, 4)}`;
   }
@@ -124,3 +121,28 @@ export function formatFormData(data) {
 export function formatPostalCode(value) {
   return value.slice(0, 5);
 }
+
+export const creditCardImage = {
+  americanExpress:
+    'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/amex.svg?sanitize=true',
+  dinersClub:
+    'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/diners.svg?sanitize=true',
+  discover:
+    'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/discover.svg?sanitize=true',
+  elo:
+    'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/elo.svg?sanitize=true',
+  hipercard:
+    'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/hipercard.svg?sanitize=true',
+  jCB:
+    'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/jcb.svg?sanitize=true',
+  maestro:
+    'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/maestro.svg?sanitize=true',
+  masterCard:
+    'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/mastercard.svg?sanitize=true',
+  mir:
+    'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/mir.svg?sanitize=true',
+  other:
+    'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/generic.svg?sanitize=true',
+  visa:
+    'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/visa.svg?sanitize=true',
+};

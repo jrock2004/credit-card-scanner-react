@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import CreditCardField from './CreditCardField';
 import {
+  creditCardImage,
   getCardType,
   formatCreditCardNumber,
   formatExpirationDate,
@@ -10,38 +11,14 @@ import {
 } from '../utils';
 
 export default function CreditCard() {
-  const [card, setCard] = useState({
-    creditCards: {
-      americanExpress:
-        'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/amex.svg?sanitize=true',
-      dinersClub:
-        'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/diners.svg?sanitize=true',
-      discover:
-        'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/discover.svg?sanitize=true',
-      jCB:
-        'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/jcb.svg?sanitize=true',
-      masterCard:
-        'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/mastercard.svg?sanitize=true',
-      other:
-        'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/generic.svg?sanitize=true',
-      visa:
-        'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/visa.svg?sanitize=true',
-    },
-    cardNumber: '',
-    cardType: 'other',
-    cardTypeImage:
-      'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/generic.svg?sanitize=true',
-    cardExpire: '',
-    cardCvc: '',
-    cardPostalCode: '',
-    cardName: '',
-  });
-
-  // useEffect(() => {
-  //   const type = card.creditCards[card.cardType];
-
-  //   setCard({ ...card, cardTypeImage: type });
-  // }, [card.cardType]);
+  const [cardImage, setCardImage] = useState(creditCardImage.other),
+    [card, setCard] = useState({
+      cardNumber: '',
+      cardExpire: '',
+      cardCvc: '',
+      cardPostalCode: '',
+      cardName: '',
+    });
 
   function handleInputChange({ target }) {
     let name = target.name,
@@ -51,6 +28,8 @@ export default function CreditCard() {
     if (name === 'cardNumber') {
       value = formatCreditCardNumber(value);
       cardType = getCardType(value);
+
+      setCardImage(creditCardImage[cardType]);
     }
 
     if (name === 'cardExpire') {
@@ -76,7 +55,7 @@ export default function CreditCard() {
             <label htmlFor="card-number" className="text-sm font-semibold text-gray-700">
               Credit card number
             </label>
-            <img className="absolute cc-image" src={card.cardTypeImage} alt="Credit card" />
+            <img className="absolute cc-image" src={cardImage} alt="Credit card" />
             <input
               autocompletetype="cc-number"
               type="tel"

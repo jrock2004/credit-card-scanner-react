@@ -21,9 +21,7 @@ function App() {
                 <span>$80.00</span>
               </div>
               <div className="pt-3 mt-4 border-t">
-                <a href="#" className="text-sm font-semibold text-teal-600">
-                  Apply gift code
-                </a>
+                <button className="text-sm font-semibold text-teal-600">Apply gift code</button>
               </div>
             </div>
           </UiContainer>
