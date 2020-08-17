@@ -8,6 +8,7 @@ import {
   formatExpirationDate,
   formatCVC,
   formatPostalCode,
+  validateCreditCardNumber,
 } from '../utils';
 
 export default function CreditCard() {
@@ -24,6 +25,8 @@ export default function CreditCard() {
     let name = target.name,
       value = target.value,
       cardType = card.cardType;
+
+    console.log(name, value);
 
     if (name === 'cardNumber') {
       value = formatCreditCardNumber(value);
@@ -44,17 +47,28 @@ export default function CreditCard() {
       value = formatPostalCode(value);
     }
 
-    setCard({ ...card, [name]: value, cardType });
+    setCard({ ...card, [name]: value });
+  }
+
+  function validateCardNumber({ target }) {
+    let value = target.value,
+      isValid = validateCreditCardNumber(value),
+      errorInput = document.querySelector('.cardNumberError');
+
+    if (value !== '' && !isValid) {
+      console.log(target, isValid);
+
+      errorInput.innerHTML = 'Credit card number is invalid';
+    } else {
+      errorInput.innerHTML = '';
+    }
   }
 
   return (
     <React.Fragment>
       <section className="max-w-68">
         <form autoComplete="on">
-          <div className="relative flex flex-col mb-2">
-            <label htmlFor="card-number" className="text-sm font-semibold text-gray-700">
-              Credit card number
-            </label>
+          <CreditCardField id="card-number" label="Credit card number" cssClass="relative mb-2">
             <img className="absolute cc-image" src={cardImage} alt="Credit card" />
             <input
               autocompletetype="cc-number"
@@ -63,13 +77,13 @@ export default function CreditCard() {
               placeholder="1234 5678 9012 3456"
               pattern="[\d| ]{16,22}"
               className="w-full py-3 pl-16 pr-2 text-lg border rounded-sm"
-              required
               value={card.cardNumber}
               onChange={handleInputChange}
+              onBlur={validateCardNumber}
             />
-          </div>
+          </CreditCardField>
           <div className="mb-2 grid grid-cols-3 gap-3">
-            <CreditCardField id="card-expire" label="Expiration">
+            <CreditCardField id="card-expire" label="Expiration" cssClass="test">
               <input
                 type="tel"
                 name="cardExpire"
@@ -77,7 +91,6 @@ export default function CreditCard() {
                 placeholder="MM/YY"
                 pattern="\d\d/\d\d"
                 className="p-3 border rounded-sm"
-                required
                 value={card.cardExpire}
                 onChange={handleInputChange}
               />
@@ -89,37 +102,26 @@ export default function CreditCard() {
                 autocompletetype="cc-csc"
                 pattern="\d{3,4}"
                 className="p-3 border rounded-sm"
-                required
                 value={card.cardCvc}
                 onChange={handleInputChange}
               />
             </CreditCardField>
-            <CreditCardField id="postal-code" label="Postal Code">
-              <input
-                type="tel"
-                name="cardPostalCode"
-                autocompletetype="postal-code"
-                className="p-3 border rounded-sm"
-                required
-                value={card.cardPostalCode}
-                onChange={handleInputChange}
-              />
-            </CreditCardField>
-          </div>
-          <div className="flex flex-col mb-2">
-            <label htmlFor="cc-name" className="text-sm font-semibold text-gray-700">
-              Name on card
-            </label>
-            <input
-              className="w-full p-3 border rounded-sm"
-              id="cc-name"
-              name="cardName"
-              type="text"
-              value={card.cardName}
-              autoComplete="cc-name"
-              onChange={handleInputChange}
+            <CreditCardField
+              id="postal-code"
+              label="Postal Code"
+              value={card.cardPostalCode}
+              autoComplete="postal-code"
+              handleInputChange={handleInputChange}
             />
           </div>
+          <CreditCardField
+            id="cardName"
+            label="Name on card"
+            cssClass="mb-2"
+            value={card.cardName}
+            autoComplete="cc-name"
+            handleInputChange={handleInputChange}
+          />
         </form>
       </section>
     </React.Fragment>

@@ -146,3 +146,7 @@ export const creditCardImage = {
   visa:
     'https://github.com/aaronfagan/svg-credit-card-payment-icons/raw/master/mono/visa.svg?sanitize=true',
 };
+
+export function validateCreditCardNumber(value) {
+  return Payment.fns.validateCardNumber(value);
+}
